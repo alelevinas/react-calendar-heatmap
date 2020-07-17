@@ -1,5 +1,5 @@
 {
-  "name": "@freecodecamp/react-calendar-heatmap",
+  "name": "react-calendar-heatmap-fork",
   "version": "1.0.0",
   "description": "A calendar heatmap component built on SVG, inspired by Github's commit calendar graph.",
   "author": "Kevin Qi",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/freeCodeCamp/react-calendar-heatmap"
+    "url": "https://github.com/alevinas/react-calendar-heatmap"
   },
   "license": "MIT",
   "keywords": [
