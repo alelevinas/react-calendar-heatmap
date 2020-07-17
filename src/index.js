@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import memoizeOne from 'memoize-one';
-import { DAYS_IN_WEEK, MILLISECONDS_IN_ONE_DAY, DAY_LABELS, MONTH_LABELS } from './constants';
+import { DAYS_IN_WEEK, MILLISECONDS_IN_ONE_DAY, DAY_LABELS, DAY_LABELS_STARTING_MONDAY, MONTH_LABELS } from './constants';
 import {
   dateNDaysAgo,
   shiftDate,
@@ -11,7 +11,7 @@ import {
   getRange,
 } from './helpers';
 
-const SQUARE_SIZE = 10;
+const SQUARE_SIZE = 15;
 const MONTH_LABEL_GUTTER_SIZE = 4;
 const CSS_PSEDUO_NAMESPACE = 'react-calendar-heatmap-';
 
@@ -68,11 +68,11 @@ class CalendarHeatmap extends React.Component {
   }
 
   getNumEmptyDaysAtStart() {
-    return this.getStartDate().getDay();
+    return this.props.firstWeekdayMonday ? (this.getStartDate().getDay() || 7) - 1 : this.getStartDate().getDay();
   }
 
   getNumEmptyDaysAtEnd() {
-    return DAYS_IN_WEEK - 1 - this.getEndDate().getDay();
+    return (DAYS_IN_WEEK - 1) - (this.props.firstWeekdayMonday ? (this.getEndDate().getDay() || 7) - 1 : this.getEndDate().getDay());
   }
 
   getWeekCount() {
@@ -104,7 +104,7 @@ class CalendarHeatmap extends React.Component {
     props.values.reduce((memo, value) => {
       const utc1 = convertToUtc(convertToDate(value.date));
       const utc2 = convertToUtc(this.getStartDateWithEmptyDays());
-      const index = Math.floor((utc1 - utc2) / MILLISECONDS_IN_ONE_DAY);
+      const index = Math.floor((utc1 - utc2) / MILLISECONDS_IN_ONE_DAY) + 1;
 
       // eslint-disable-next-line no-param-reassign
       memo[index] = {
@@ -163,7 +163,7 @@ class CalendarHeatmap extends React.Component {
 
   getTransformForWeekdayLabels() {
     if (this.props.horizontal) {
-      return `translate(${SQUARE_SIZE}, ${this.getMonthLabelSize()})`;
+      return `translate(${SQUARE_SIZE - 5}, ${this.getMonthLabelSize()})`;
     }
     return null;
   }
@@ -301,7 +301,10 @@ class CalendarHeatmap extends React.Component {
     if (!this.props.showWeekdayLabels) {
       return null;
     }
-    return this.props.weekdayLabels.map((weekdayLabel, dayIndex) => {
+    
+    const weekdayLabels = this.props.firstWeekdayMonday ? DAY_LABELS_STARTING_MONDAY : DAY_LABELS;
+
+    return weekdayLabels.map((weekdayLabel, dayIndex) => {
       const [x, y] = this.getWeekdayLabelCoordinates(dayIndex);
       const cssClasses = `${
         this.props.horizontal ? '' : `${CSS_PSEDUO_NAMESPACE}small-text`
@@ -367,6 +370,7 @@ CalendarHeatmap.propTypes = {
   onMouseOver: PropTypes.func, // callback function when mouse pointer is over a square
   onMouseLeave: PropTypes.func, // callback function when mouse pointer is left a square
   transformDayElement: PropTypes.func, // function to further transform the svg element for a single day
+  firstWeekdayMonday: PropTypes.bool, // whether to start the week from Monday instead of Sunday
 };
 
 CalendarHeatmap.defaultProps = {
@@ -387,6 +391,7 @@ CalendarHeatmap.defaultProps = {
   onMouseOver: null,
   onMouseLeave: null,
   transformDayElement: null,
+  firstWeekdayMonday: false,
 };
 
 export default CalendarHeatmap;

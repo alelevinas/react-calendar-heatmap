@@ -70,3 +70,7 @@
 .react-calendar-heatmap .color-gitlab-4 {
   fill: #254e77;
 }
+
+.react-calendar-heatmap rect {
+  cursor: pointer;
+}

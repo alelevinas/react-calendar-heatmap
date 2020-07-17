@@ -18,3 +18,4 @@ export const MONTH_LABELS = [
 ];
 
 export const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+export const DAY_LABELS_STARTING_MONDAY = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];

@@ -147,7 +147,7 @@ describe('CalendarHeatmap props', () => {
   it('classForValue', () => {
     const today = new Date();
     const numDays = 10;
-    const expectedStartDate = shiftDate(today, -numDays + 1);
+    const expectedStartDate = shiftDate(today, -numDays);
     const wrapper = shallow(
       <CalendarHeatmap
         values={[{ date: expectedStartDate, count: 0 }, { date: today, count: 1 }]}
@@ -202,6 +202,31 @@ describe('CalendarHeatmap props', () => {
 
     expect(vertical.find('text.react-calendar-heatmap-small-text')).toHaveLength(3);
   });
+
+  it('firstWeekdayMonday false', () => {
+    const calendar = shallow(<CalendarHeatmap
+      startDate={new Date("2015-12-31")}
+      endDate={new Date("2016-10-01")}
+      values={[]}
+      firstWeekdayMonday={false}
+    />);
+
+    const squares = calendar.find('.react-calendar-heatmap-week').first().find('rect');
+    expect(squares.length).toEqual(2);
+  });
+
+  it('firstWeekdayMonday true', () => {
+    const calendar = shallow(<CalendarHeatmap
+      startDate={new Date("2015-12-31")}
+      endDate={new Date("2016-10-01")}
+      values={[]}
+      firstWeekdayMonday={true}
+    />);
+
+    const squares = calendar.find('.react-calendar-heatmap-week').first().find('rect');
+    expect(squares.length).toEqual(3);
+  });
+
 
   it('transformDayElement', () => {
     const transform = (rect) => React.cloneElement(rect, { 'data-test': 'ok' });
