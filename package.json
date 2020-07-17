@@ -1,6 +1,6 @@
 {
   "name": "react-calendar-heatmap-fork",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A calendar heatmap component built on SVG, inspired by Github's commit calendar graph.",
   "author": "Kevin Qi",
   "main": "dist/react-calendar-heatmap.cjs.js",
